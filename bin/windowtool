@@ -1,0 +1,15 @@
+#!/bin/bash
+WINDOW_TITLE='Window Tool'
+WINDOW_DATA='Search for window by name:'
+
+if [ "$#" -eq 1 ]; then
+  if [ $1 = "list" ]; then
+    # fetch window title list
+    WINDOW_DATA=$(wmctrl -l | grep -v -- -1 | cut -d ' ' -f5-)
+  fi
+fi
+
+PICKED_DATA=`zenity --entry --title="$WINDOW_TITLE" --text="$WINDOW_DATA"`
+if [ -n $PICKED_DATA ]; then
+  wmctrl -a "$PICKED_DATA"
+fi
