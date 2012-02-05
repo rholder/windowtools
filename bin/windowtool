@@ -10,6 +10,10 @@ if [ "$#" -eq 1 ]; then
 fi
 
 PICKED_DATA=`zenity --entry --title="$WINDOW_TITLE" --text="$WINDOW_DATA"`
-if [ -n $PICKED_DATA ]; then
-  wmctrl -a "$PICKED_DATA"
+if [[ $? -eq 0 ]]; then
+  if [ -n $PICKED_DATA ]; then
+    wmctrl -a "$PICKED_DATA"
+  fi
 fi
+
+
