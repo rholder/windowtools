@@ -9,7 +9,7 @@ if [ "$#" -eq 1 ]; then
   fi
 fi
 
-PICKED_DATA=`zenity --entry --title="$WINDOW_TITLE" --text="$WINDOW_DATA"`
+PICKED_DATA=`zenity --entry --title="$WINDOW_TITLE" --text="$WINDOW_DATA" --timeout=10`
 if [[ $? -eq 0 ]]; then
   if [ -n $PICKED_DATA ]; then
     wmctrl -a "$PICKED_DATA"
