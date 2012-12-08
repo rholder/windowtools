@@ -2,6 +2,10 @@
 WINDOW_TITLE='Window Tool'
 WINDOW_DATA='Search for window by name:'
 
+# future use in window resizing operations
+#SCREEN_W=$(xwininfo -root | sed -n 's/^  Width: \(.*\)$/\1/p')
+#SCREEN_H=$(xwininfo -root | sed -n 's/^  Height: \(.*\)$/\1/p')
+
 if [ "$#" -eq 1 ]; then
   if [ $1 = "list" ]; then
     # fetch window title list
@@ -9,11 +13,11 @@ if [ "$#" -eq 1 ]; then
   fi
 fi
 
-PICKED_DATA=`zenity --entry --title="$WINDOW_TITLE" --text="$WINDOW_DATA" --timeout=10`
-if [[ $? -eq 0 ]]; then
+# sometimes OK gets returned as 0 or 5...
+PICKED_DATA=`zenity --entry --title="$WINDOW_TITLE" --text="$WINDOW_DATA"`
+if [[ $? -ne 1 ]]; then
   if [ -n $PICKED_DATA ]; then
-    wmctrl -a "$PICKED_DATA"
+    wmctrl -xlG | awk '{ s = ""; for (i = 9; i <= NF; i++) s = s $i " "; print $1 " " s }' | grep -i "$PICKED_DATA" | awk '{print $1}' | while read WINS; do wmctrl -ia "$WINS"; done
   fi
 fi
-
 
